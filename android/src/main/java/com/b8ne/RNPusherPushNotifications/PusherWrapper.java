@@ -164,6 +164,25 @@ public class PusherWrapper {
         }
     }
 
+    public void setUserId(final String userId, final String token, final Callback errorCallback, final Callback successCallback) {
+        Log.d("PUSHER_WRAPPER", "Setting userId to " + userId);
+        System.out.print("Setting userId to " + userId);
+        try {
+            LocalTokenProvider instance = new LocalTokenProvider(token);
+
+            PushNotifications.setUserId(userId, instance);
+
+            Log.d("PUSHER_WRAPPER", "Success! " + userId);
+            System.out.print("Success! " + userId);
+            successCallback.invoke();
+        } catch (Exception ex) {
+            Log.d("PUSHER_WRAPPER", "Exception in PusherWrapper " + ex.getMessage());
+            System.out.print("Exception in PusherWrapper.setUserId " + ex.getMessage());
+            // historically this is expecting a statusCode as first arg
+            errorCallback.invoke(0, ex.getMessage());
+        }
+    }
+
     public void setOnSubscriptionsChangedListener(final Callback subscriptionChangedListener) {
 
         PushNotifications.setOnSubscriptionsChangedListener(new SubscriptionsChangedListener() {
